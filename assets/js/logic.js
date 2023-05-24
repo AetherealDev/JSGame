@@ -1,7 +1,7 @@
 // variables to keep track of quiz state
 var currentQuestionIndex = 0;
 //time left value here
-// var time = ;
+var time = 10 ;
 var timerId;
 
 // variables to reference DOM elements
@@ -37,13 +37,14 @@ function getQuestion() {
 
   // update title with current question
   var titleEl = document.getElementById('');
-  titleEl.textContent = ; //think dot notation
+  titleEl.textContent = currentQuestion.title; //think dot notation
 
   // clear out any old question choices
+  var choicesEl = document.getElementById('choices');
   choicesEl.innerHTML = '';
 
   // loop over choices
-  for (var i = 0; i < ; i++) {
+  for (var i = 0; i < currentQuestion.choices.length ; i++) {
     // create new button for each choice
     var choice = currentQuestion.choices[i];
     var choiceNode = document.createElement('');
@@ -53,9 +54,10 @@ function getQuestion() {
     choiceNode.textContent = i + 1 + '. ' + choice;
 
     // display on the page
-    choicesEl.appendChild();
+    choicesEl.appendChild(choiceNode);
   }
 }
+
 
 function questionClick(event) {
   var buttonEl = event.target;
@@ -69,32 +71,29 @@ function questionClick(event) {
   if () {
 
 
-
     // penalize time
-    
-  
-   
+
 
     // display new time on page
-   
 
-  // flash right/wrong feedback on page for half a second
- 
 
-  // move to next question
-  
+    // flash right/wrong feedback on page for half a second
 
-  // check if we've run out of questions or if time ran out?
-  if () {
 
-    //if it did ???
+    // move to next question
 
-  } else {
-    
-    // if it didnt??
+
+    // check if we've run out of questions or if time ran out?
+    if () {
+
+      //if it did ???
+
+    } else {
+
+      // if it didnt??
+    }
   }
 }
-
 function quizEnd() {
   // stop timer
  
@@ -112,7 +111,7 @@ function quizEnd() {
 function clockTick() {
   // update time
   // decrement the variable we are using to track time
-  timerEl.textContent = ; // update out time
+  timerEl.textContent = time ; // update out time
 
   // check if user ran out of time
   if (time <= 0) {
