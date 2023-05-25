@@ -3,6 +3,7 @@
 ![Screenshot of Website](screenshot.png)
 
 ## Link to website
+https://aetherealdev.github.io/JSGame/
 
 ## About this project
 JSGame is a simple quiz website to test your Javascript knowledge
