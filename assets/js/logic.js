@@ -1,32 +1,34 @@
 // variables to keep track of quiz state
 var currentQuestionIndex = 0;
 //time left value here
-var time = 10 ;
+var time = 100 ;
 var timerId;
+var correct;
 
 // variables to reference DOM elements
-var questionsEl = document.getElementById('');
-var timerEl = document.getElementById('');
-var choicesEl = document.getElementById('');
-var submitBtn = document.getElementById('');
-var startBtn = document.getElementById('');
-var initialsEl = document.getElementById('');
-var feedbackEl = document.getElementById('');
+var questionsEl = document.getElementById('questions');
+var timerEl = document.getElementById('time');
+var choicesEl = document.getElementById('choices');
+var submitBtn = document.getElementById('submit');
+var startBtn = document.getElementById('start');
+var initialsEl = document.getElementById('initials');
+var feedbackEl = document.getElementById('feedback');
 
 
 function startQuiz() {
+  console.log("Clicked start")
   // hide start screen
-  var startScreenEl = document.getElementById('');
-  startScreenEl.setAttribute('class', '');
+  var startScreenEl = document.getElementById('start-screen');
+  startScreenEl.setAttribute('class', 'hide');
 
   // un-hide questions section
-  questionsEl.removeAttribute('');
+  questionsEl.removeAttribute('class');
 
   // start timer
   timerId = setInterval(clockTick, 1000);
 
   // show starting time
-  timerEl.textContent = time;
+  timerEl.textContent = time.toString();
 
   getQuestion();
 }
@@ -34,24 +36,29 @@ function startQuiz() {
 function getQuestion() {
   // get current question object from array
   var currentQuestion = questions[currentQuestionIndex];
+  // console.log(currentQuestion)
+  // console.log(currentQuestion.title)
+
 
   // update title with current question
-  var titleEl = document.getElementById('');
-  titleEl.textContent = currentQuestion.title; //think dot notation
+  var titleEl = document.getElementById('question-title');
+  titleEl.textContent = currentQuestion.title.toString(); //think dot notation
+
 
   // clear out any old question choices
   var choicesEl = document.getElementById('choices');
   choicesEl.innerHTML = '';
 
+
   // loop over choices
   for (var i = 0; i < currentQuestion.choices.length ; i++) {
     // create new button for each choice
     var choice = currentQuestion.choices[i];
-    var choiceNode = document.createElement('');
+    var choiceNode = document.createElement('button');
     choiceNode.setAttribute('class', 'choice');
     choiceNode.setAttribute('value', choice);
 
-    choiceNode.textContent = i + 1 + '. ' + choice;
+    choiceNode.textContent = choice;
 
     // display on the page
     choicesEl.appendChild(choiceNode);
@@ -60,6 +67,7 @@ function getQuestion() {
 
 
 function questionClick(event) {
+  let questionCorrect = false;
   var buttonEl = event.target;
 
   // if the clicked element is not a choice button, do nothing.
@@ -67,51 +75,76 @@ function questionClick(event) {
     return;
   }
 
+
   // check if user guessed wrong
-  if () {
+  if (buttonEl.textContent !== questions[currentQuestionIndex].answer) {
+    console.log(buttonEl.textContent)
+    console.log(questions[currentQuestionIndex].answer)
 
 
     // penalize time
-
+    time = time - 10
 
     // display new time on page
+    timerEl.textContent = time.toString();
+    } else { // user is correct :D
+      correct++
+    questionCorrect = true;
+    console.log("User is Right!");
+  }
 
 
-    // flash right/wrong feedback on page for half a second
-
-
-    // move to next question
+  // https://www.sitepoint.com/delay-sleep-pause-wait/
+  if (questionCorrect) { // Flash correct feedback
+    let feedbackText = document.getElementById("feedbacktext");
+    feedbackText.textContent = "Correct!";
+    feedbackEl.setAttribute('class', 'feedback');
+    setTimeout(() => {
+      feedbackEl.setAttribute('class', 'feedback hide');
+      }, 500); // 500 milliseconds
+  } else { // Flash wrong feedback
+    let feedbackText = document.getElementById("feedbacktext");
+    feedbackText.textContent = "Wrong!";
+    feedbackEl.setAttribute('class', 'feedback');
+    setTimeout(() => {
+      feedbackEl.setAttribute('class', 'feedback hide');
+    }, 500); // 500 milliseconds
+  }
 
 
     // check if we've run out of questions or if time ran out?
-    if () {
-
-      //if it did ???
-
+  console.log(currentQuestionIndex)
+  console.log(questions.length)
+    if (currentQuestionIndex+1 === questions.length || time <= 0) {
+      quizEnd();
     } else {
-
-      // if it didnt??
+      currentQuestionIndex++
+      getQuestion();
     }
-  }
 }
 function quizEnd() {
   // stop timer
- 
+  clearInterval(timerId);
+
   // show end screen
-  var endScreenEl = document.getElementById('');
-  endScreenEl.removeAttribute('class');
+  var endScreenEl = document.getElementById('end-screen');
+  endScreenEl.setAttribute('class', "");
 
   // show final score
-  var finalScoreEl = document.getElementById('');
-  finalScoreEl.textContent = time;
+  var finalScoreEl = document.getElementById('final-score');
+  finalScoreEl.textContent = time.toString();
 
   // hide questions section
+  var questionsSectionEl = document.getElementById('questions');
+  questionsSectionEl.setAttribute('class', 'hide');
+
 }
 
 function clockTick() {
   // update time
+  time--
   // decrement the variable we are using to track time
-  timerEl.textContent = time ; // update out time
+  timerEl.textContent = time.toString() ; // update our time
 
   // check if user ran out of time
   if (time <= 0) {
