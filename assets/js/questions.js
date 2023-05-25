@@ -26,5 +26,3 @@ var questions = [
     answer: 'concat()',
   },
 ];
-
-// Rest of your code...
